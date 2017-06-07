@@ -124,7 +124,7 @@
         }
         p = p.before;
     }
-    
+    [header resetLinkIndexs];
     return header;
 }
 
@@ -163,6 +163,7 @@
         RNode *next = endNode.next;
         if (!before && !next) {
             [startNode deleteAll];
+            self.index = 0;
             return self;
         }else{
             before.next = next;
@@ -174,6 +175,7 @@
 //            return [self header];
             RNode *needNode = [before?:next header];
             NSAssert(needNode, @"链表有无法引用风险");
+            [needNode resetLinkIndexs];
             return needNode;
         }
     }else{
@@ -210,6 +212,8 @@
         header.next = nil;
     }
     
+    [header ? : self  resetLinkIndexs];
+    
     return header ? : self;
 }
 
@@ -243,6 +247,7 @@
         tail.before = nil;
     }
     
+    [tail ?: self resetLinkIndexs];
     return tail ? [tail header] : self;
 }
 
@@ -271,6 +276,7 @@
             node.next = next;
             before.next = node;
             next.before = node;
+            node.index = p.index;
             
             p.before = nil;
             p.next = nil;
@@ -297,6 +303,7 @@
     node.next = next;
     before.next = node;
     next.before = node;
+    node.index = self.index;
     
     self.before = nil;
     self.next = nil;
@@ -316,6 +323,7 @@
         
         p.next = nil;
         node.before = nil;
+        node.index = 0;
     }
 }
 
