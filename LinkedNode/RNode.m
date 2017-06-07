@@ -248,6 +248,64 @@
 
 
 /**
+ @brief 替换节点
+ @return 替换成功返回表头，不成功nil
+ */
+-(RNode*)replaceAtIndex:(NSInteger)index withNode:(RNode*)node{
+    if (!node) {
+        return node;
+    }
+    if (index < 0) {
+        return nil;
+    }
+    NSAssert(!node.next && !node.before, @"node不能在多链表中共存");
+    
+    RNode *p = [self tail];
+    NSInteger tmpIndex = -1;
+    while (p) {
+        tmpIndex++;
+        if (tmpIndex == index) {
+            RNode *before = p.before;
+            RNode *next = p.next;
+            node.before = before;
+            node.next = next;
+            before.next = node;
+            next.before = node;
+            
+            p.before = nil;
+            p.next = nil;
+            return [node header];
+        }
+        p = p.next;
+    }
+
+    return nil;
+}
+
+/**
+ @brief 使用node替换自己,self从链表中踢出
+ @return 替换成功返回表头，不成功nil
+ */
+-(RNode*)replaceWithNode:(RNode*)node{
+    if (!node) {
+        return node;
+    }
+    NSAssert(!node.next && !node.before, @"node不能在多链表中共存");
+    RNode *before = self.before;
+    RNode *next = self.next;
+    node.before = before;
+    node.next = next;
+    before.next = node;
+    next.before = node;
+    
+    self.before = nil;
+    self.next = nil;
+    return [node header];
+}
+
+
+
+/**
  @brief 删除所在链表
  */
 -(void)deleteAll{

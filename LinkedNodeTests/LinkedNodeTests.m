@@ -185,7 +185,31 @@
     
 }
 
--(void)testDeleteNodeLeaveStep{
+-(void)testDeleteNodeLeaveHeaderStep{
+    RNode *n1 = [RNode new];
+    RNode *n2 = [RNode new];
+    RNode *n3 = [RNode new];
+    RNode *n4 = [RNode new];
+    RNode *n5 = [RNode new];
+    
+    [n1 addHeader:n2];
+    [n1 addHeader:n3];
+    [n1 addHeader:n4];
+    [n1 addHeader:n5];
+    
+    [n5 deleteHeaderLeaveStep:40];
+    
+    [n5 deleteHeaderLeaveStep:4];
+    XCTAssertEqual(n1.next, n2,@"删除节点错误");
+    
+    [n3 deleteHeaderLeaveStep:2];
+    XCTAssertEqual(n5.before, nil,@"删除节点错误");
+    XCTAssertEqual(n3.next,nil,@"删除节点错误");
+    XCTAssertEqual(n2.next,nil,@"删除节点错误");
+     XCTAssertEqual(n1.next,n2,@"删除节点错误");
+}
+
+-(void)testDeleteNodeLeaveTailStep{
     RNode *n1 = [RNode new];
     RNode *n2 = [RNode new];
     RNode *n3 = [RNode new];
@@ -205,6 +229,33 @@
     [n3 deleteTailLeaveStep:2];
     XCTAssertEqual(n5.before, nil,@"删除节点错误");
     
+}
+
+-(void)testReplaceNode{
+    RNode *n1 = [RNode new];
+    RNode *n2 = [RNode new];
+    RNode *n3 = [RNode new];
+    RNode *n4 = [RNode new];
+    RNode *n5 = [RNode new];
+    
+    [n1 addHeader:n2];
+    [n1 addHeader:n3];
+    [n1 addHeader:n4];
+//    [n1 addHeader:n5];
+    
+    [n1 replaceAtIndex:1 withNode:n5];
+    
+    XCTAssertEqual(n2.next && n2.before , NO,@"替换节点失败");
+    XCTAssertEqual(n1.next, n5 ,@"替换节点失败");
+    
+    
+     XCTAssertEqual([n1 replaceAtIndex:100 withNode:n2], nil ,@"替换节点失败");
+    
+    [n1 replaceAtIndex:3 withNode:n2];
+    
+    XCTAssertEqual(n2.before, n3 ,@"替换节点失败");
+    XCTAssertEqual(n2.next, nil ,@"替换节点失败");
+    XCTAssertEqual(n1.next.next.next, n2 ,@"替换节点失败");
 }
 
 

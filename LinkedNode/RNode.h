@@ -71,13 +71,13 @@
 
 /**
  @brief 替换节点
- @return node
+ @return 替换成功返回表头，不成功nil
  */
 -(RNode*)replaceAtIndex:(NSInteger)index withNode:(RNode*)node;
 
 /**
  @brief 使用node替换自己,self从链表中踢出
- @return node
+ @return 替换成功返回表头，不成功nil
  */
 -(RNode*)replaceWithNode:(RNode*)node;
 
